@@ -1,29 +1,57 @@
-package com.adventure.movie.controller;
-
-import com.adventure.movie.model.Movie;
-import com.adventure.movie.repository.MovieRepository;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-@RestController
-@RequestMapping("/api/movies")
-@CrossOrigin(origins = "*")
-public class MovieController {
-
-    private final MovieRepository repository;
-
-    public MovieController(MovieRepository repository) {
-        this.repository = repository;
-    }
-
-    @GetMapping
-    public List<Movie> getAllMovies() {
-        return repository.findAll();
-    }
-
-    @PostMapping
-    public Movie addMovie(@RequestBody Movie movie) {
-        return repository.save(movie);
-    }
+{
+  "package": "com.adventure.movie.controller",
+  "imports": [
+    "com.adventure.movie.model.Movie",
+    "com.adventure.movie.repository.MovieRepository",
+    "org.springframework.web.bind.annotation.*",
+    "java.util.List"
+  ],
+  "class": {
+    "name": "MovieController",
+    "annotations": [
+      "@RestController",
+      "@RequestMapping(\"/api/movies\")",
+      "@CrossOrigin(origins = \"*\")"
+    ],
+    "fields": [
+      {
+        "name": "repository",
+        "type": "MovieRepository",
+        "modifiers": ["private", "final"]
+      }
+    ],
+    "constructors": [
+      {
+        "parameters": [
+          {
+            "name": "repository",
+            "type": "MovieRepository"
+          }
+        ],
+        "body": "this.repository = repository;"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getAllMovies",
+        "returnType": "List<Movie>",
+        "annotations": ["@GetMapping"],
+        "parameters": [],
+        "body": "return repository.findAll();"
+      },
+      {
+        "name": "addMovie",
+        "returnType": "Movie",
+        "annotations": ["@PostMapping"],
+        "parameters": [
+          {
+            "name": "movie",
+            "type": "Movie",
+            "annotations": ["@RequestBody"]
+          }
+        ],
+        "body": "return repository.save(movie);"
+      }
+    ]
+  }
 }

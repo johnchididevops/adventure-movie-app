@@ -1,3 +1,19 @@
-FROM nginx:alpine
-COPY index.html /usr/share/nginx/html/index.html
-EXPOSE 80
+{
+  "file": "dockerfile",
+  "baseImage": "nginx:alpine",
+  "instructions": [
+    {
+      "instruction": "FROM",
+      "value": "nginx:alpine"
+    },
+    {
+      "instruction": "COPY",
+      "source": "index.html",
+      "destination": "/usr/share/nginx/html/index.html"
+    },
+    {
+      "instruction": "EXPOSE",
+      "port": 80
+    }
+  ]
+}
