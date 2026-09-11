@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: adventure_db
+
+  backend:
+    build: ./backend
+    container_name: movie-backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/adventure_db
+    depends_on:
+      - mongodb
+
+  frontend:
+    build: ./frontend
+    container_name: movie-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend

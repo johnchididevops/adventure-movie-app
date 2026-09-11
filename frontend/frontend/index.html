@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Adventure Movies</title>
+</head>
+<body>
+    <h1>Adventure Movie Catalog</h1>
+    <ul id="movie-list"></ul>
+
+    <script>
+        async function fetchMovies() {
+            const res = await fetch('/api/movies');
+            const movies = await res.json();
+            const list = document.getElementById('movie-list');
+            list.innerHTML = movies.map(m => `<li><strong>${m.title}</strong>: ${m.description}</li>`).join('');
+        }
+        fetchMovies();
+    </script>
+</body>
+</html>
