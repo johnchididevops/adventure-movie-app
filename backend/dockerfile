@@ -1,54 +1,13 @@
-{
-  "file": "Dockerfile",
-  "stages": [
-    {
-      "name": "build",
-      "baseImage": "maven:3.9-eclipse-temurin-17",
-      "instructions": [
-        {
-          "instruction": "WORKDIR",
-          "value": "/app"
-        },
-        {
-          "instruction": "COPY",
-          "source": "pom.xml",
-          "destination": "."
-        },
-        {
-          "instruction": "COPY",
-          "source": "src",
-          "destination": "./src"
-        },
-        {
-          "instruction": "RUN",
-          "command": "mvn clean package -DskipTests"
-        }
-      ]
-    },
-    {
-      "name": "final",
-      "baseImage": "eclipse-temurin:17-jre",
-      "instructions": [
-        {
-          "instruction": "WORKDIR",
-          "value": "/app"
-        },
-        {
-          "instruction": "COPY",
-          "flags": ["--from=build"],
-          "source": "/app/target/*.jar",
-          "destination": "app.jar"
-        },
-        {
-          "instruction": "EXPOSE",
-          "port": 8080
-        },
-        {
-          "instruction": "ENTRYPOINT",
-          "executable": "java",
-          "args": ["-jar", "app.jar"]
-        }
-      ]
-    }
-  ]
-}
+# Build stage
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# Production stage
+FROM eclipse-temurin:17-jre
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
